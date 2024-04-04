@@ -58,20 +58,40 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-## Database Schema
+ # List of Controllers
+    # 1. Employees
+    # 2. Candidate
 
-  # Candidate Table
+ # Database Schema
 
-   CREATE TABLE candidate (
-        candidate_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-        name VARCHAR,
-        joiningDate VARCHAR,
-        phone VARCHAR,
-        email VARCHAR,
-        age INTEGER,
-        created_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  );
+    # Candidate Table
+
+     CREATE TABLE candidate (
+          candidateId UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+          name VARCHAR,
+          joiningDate VARCHAR,
+          mobile VARCHAR,
+          email VARCHAR,
+          age INTEGER,
+          createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+
+    # Employee Table
+
+      CREATE TABLE employee (
+          employee_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+          id INTEGER,
+          name VARCHAR,
+          email VARCHAR,
+          phone VARCHAR,
+          createdBy VARCHAR,
+          dob DATE,
+          createdOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updatedOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updatedBy VARCHAR
+      );
+#
 
 
 
