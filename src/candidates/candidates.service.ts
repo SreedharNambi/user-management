@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PostgresService } from 'src/database/postgres.service';
 import {Pool} from 'pg';
 import { CandidateModel } from 'src/models/candidate.model';
+import { CandidateResponseDto } from './dto/candidate-response.dto';
 
 @Injectable()
 export class CandidatesService {
@@ -18,15 +19,22 @@ export class CandidatesService {
         return 'Candidate created successfully';
     }
 
-    async getCandidates(limit:number,offset:number){
+    async getCandidates(limit:number,offset:number):Promise<CandidateResponseDto>{
+        const result = new CandidateResponseDto();
         const rs = await CandidateModel.getAll(this.pool,limit,offset);
-        return rs;
+        result.data = rs.data;
+        result.offset = rs.offset;
+        result.total = rs.total;
+        return result;
 
     }
 
-    async searchCandidate(search: string, sortBy?:string, order?:string){
+    async searchCandidate(search: string, sortBy?:string, order?:string):Promise<CandidateResponseDto>{
+        const result = new CandidateResponseDto();
         const rs = await CandidateModel.searchCandidate(this.pool, search, sortBy, order);
-        return rs;
+        if(!rs.length) throw new BadRequestException('No candidate found');
+        result.data = rs;
+        return result;
     }
 
 }

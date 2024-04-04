@@ -15,10 +15,15 @@ export class CandidateModel{
 
     age: number;
 
+    createdDt?:string;
+
     public static build(d:any):CandidateModel{
         let model = new CandidateModel();
-        if(d.createdDate) d.candidateId = d.candidate_id;
-        ['candidateId', 'name', 'email', 'phone', 'joiningDate','age'].map(key=> model[key] = d[key]!==undefined ? d[key] :model[key]);
+        if(d.createdDate) {
+            d.candidateId = d.candidate_id;
+            d.createdDt = d.createdDate;
+        }
+        ['candidateId', 'name', 'email', 'phone', 'joiningDate','age','createdDt'].map(key=> model[key] = d[key]!==undefined ? d[key] :model[key]);
         if(!model.candidateId) model.candidateId = v4(); 
         return model;
     }
@@ -50,18 +55,21 @@ export class CandidateModel{
                 }
             return data;
             }
+            return [];
         }
     }
 
     public static async getAll(pool:Pool, limit:number,offset:number){
-        let data:CandidateModel[]=[];
-        const rs = await pool.query("SELECT * FROM candidate LIMIT $1 OFFSET $2",[limit, offset]);
+        let data:CandidateModel[]=[], total:number;
+        let rs:QueryResult | void = await pool.query("SELECT COUNT(*) FROM candidate",[]).catch(e=>console.log(e));
+        if(rs && rs.rows.length) total = rs.rows[0].count;
+        rs = await pool.query("SELECT * FROM candidate LIMIT $1 OFFSET $2",[limit, offset]).catch(e=>{console.log(e)});
         if(rs && rs.rows.length){
             for(let row of rs.rows){
                 let candidate = CandidateModel.build(row);
                 if(candidate) data.push(candidate);
             }
-        return data;
+        return {data, total, offset: offset};
 
          }
     }
