@@ -58,6 +58,23 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## Database Schema
+
+# Candidate Table
+
+ CREATE TABLE candidate (
+      candidate_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      name VARCHAR,
+      joiningDate VARCHAR,
+      phone VARCHAR,
+      email VARCHAR,
+      age INTEGER,
+      created_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+
+
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
