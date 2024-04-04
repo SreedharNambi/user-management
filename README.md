@@ -60,8 +60,8 @@ $ yarn run test:cov
 
 ## Database Schema
 
-  Candidate Table
-  
+  # Candidate Table
+
    CREATE TABLE candidate (
         candidate_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         name VARCHAR,
